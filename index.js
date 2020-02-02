@@ -15,7 +15,7 @@ app.use(volleyball)
 const port = process.env.PORT || 5000
 
 // Connect to mongoDB
-mongoose.connect('mongodb://authapp2:authapp22@ds257054.mlab.com:57054/auth-app2',{
+mongoose.connect(process.env.DB_URI,{
   useNewUrlParser:true,
   useCreateIndex: true,
   useUnifiedTopology: true
