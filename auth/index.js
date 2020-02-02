@@ -5,15 +5,18 @@ const userModel = require('../model/index')
 // Signup strategy
 passport.use('signup', new LocalStrategy({
   usernameField: "email",
-  passwordField: "password"
-}, async (email, password, done)=>{
+  passwordField: "password",
+  passReqToCallback: true
+}, async (req,email, password, done)=>{
   try {
     // Create user in DB
     // TODO: use userModel.exists() to see if the email exists already
-    // if (userModel.exists({email: email})) {
-    //   console.log('what?')
-    //   return done(null, false, {message: 'User already exists'})
-    // }
+    const userExists = await userModel.exists({email: email})
+    if (userExists) {
+      // User already exists, cannot create it
+      return done(null, false, {message: 'Username already exists'})
+    }
+    // User does not exist, create the new user
     const user = await userModel.create({email,password})
     done(null,user)
     
@@ -21,3 +24,5 @@ passport.use('signup', new LocalStrategy({
     return done(error)
   }
 }))
+
+

@@ -2,17 +2,21 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 
-// Sign up route
-router.post('/signup',
-  passport.authenticate('signup',{session:false}),
-  (req,res,next) =>{
-    res.status(200).json({message:'success',
-    user:{
-      email:req.user.email,
-      id: req.user._id
-    }})
-  }
-)
+
+router.post('/signup', (req,res,next)=> {
+  passport.authenticate('signup', {session: false},(err,user,info,status)=>{
+    if (user) {
+      res.status(200).json({ message: 'Success, username created',
+      user:{
+        email: user.email,
+        id: user._id
+      }})
+    } else {
+    res.status(400).json({info: info,
+    error: err})
+    }
+  })(req,res,next) 
+})
 
 // Sign in route
 router.get('/signin',(req,res)=>{
