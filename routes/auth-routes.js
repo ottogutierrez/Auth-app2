@@ -13,8 +13,7 @@ router.post('/signup', (req,res,next)=> {
         id: user._id
       }})
     } else {
-    res.status(400).json({info: info,
-    error: err})
+    res.status(400).json(info)
     }
   })(req,res,next) 
 })
@@ -36,7 +35,9 @@ router.post('/signin', (req,res,next)=>{
             user: user.email,
             id: user._id
           }
-          const token = jwt.sign(body,process.env.JWT_SECRET)
+          // The token will expire in 2 days
+          const tokenExpiry = {expiresIn: "2 days"}
+          const token = jwt.sign(body,process.env.JWT_SECRET,tokenExpiry)
           res.json({token})
         })
       }

@@ -27,6 +27,9 @@ mongoose.connection.on('error', error => console.log(error))
 const auth = require('./routes/auth-routes')
 app.use('/auth',auth)
 
+const api = require('./routes/api')
+app.use('/api', api)
+
 
 // Create server
 app.listen(port, ()=> console.log(`Server listening on port ${port}`))

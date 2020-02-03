@@ -12,6 +12,10 @@ const userSchema = new schema({
   password: {
     type: String,
     required: true
+  },
+  bio: {
+    type: String,
+    required: false
   }
 })
 
